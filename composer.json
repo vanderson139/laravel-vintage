@@ -1,0 +1,21 @@
+{
+    "name": "vanderson139/laravel-vintage",
+    "description": "Runs legacy code inside a Laravel Project",
+    "type": "project",
+    "require": {
+        "laravel/laravel": "^5.8"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vanderson Lopes",
+            "email": "vandersonlopes@yahoo.com.br"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Vintage\\": "src/Vintage"
+        }
+    }
+}
