@@ -2,7 +2,7 @@
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
-final class ServiceProvider extends LaravelServiceProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     private $config = __DIR__ . '/../../config/vintage.php';
 
@@ -24,17 +24,20 @@ final class ServiceProvider extends LaravelServiceProvider
             $this->config, 'vintage'
         );
 
+        $this->app->singleton('vintage', function ($app) {
+            return new Factory($app);
+        });
+
         $this->registerIncludePath();
         $this->registerMiddlewares();
-        error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
     }
 
-    private function registerIncludePath() {
+    private function registerIncludePath(): void {
         $include_path = base_path(config('vintage.folder_name'));
         set_include_path(get_include_path() . PATH_SEPARATOR . $include_path);
     }
 
-    private function registerMiddlewares() {
+    private function registerMiddlewares(): void {
         $router = $this->app['router'];
 
         foreach (config('vintage.middlewares', []) as $midleware) {

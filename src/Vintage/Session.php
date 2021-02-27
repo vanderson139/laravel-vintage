@@ -6,8 +6,7 @@ class Session implements \ArrayAccess
 {
     protected $session;
 
-    public function __construct(LaravelSession $session)
-    {
+    public function __construct(LaravelSession $session) {
         $this->session = $session;
     }
 
@@ -25,8 +24,7 @@ class Session implements \ArrayAccess
      * The return value will be casted to boolean if non-boolean was returned.
      * @since 5.0.0
      */
-    public function offsetExists($offset)
-    {
+    public function offsetExists($offset) {
         return $this->session->has($offset);
     }
 
@@ -41,8 +39,7 @@ class Session implements \ArrayAccess
      * @return mixed Can return all value types.
      * @since 5.0.0
      */
-    public function offsetGet($offset)
-    {
+    public function offsetGet($offset) {
         return $this->session->get($offset);
     }
 
@@ -60,8 +57,7 @@ class Session implements \ArrayAccess
      * @return void
      * @since 5.0.0
      */
-    public function offsetSet($offset, $value)
-    {
+    public function offsetSet($offset, $value) {
         $this->session->put($offset, $value);
     }
 
@@ -76,8 +72,7 @@ class Session implements \ArrayAccess
      * @return void
      * @since 5.0.0
      */
-    public function offsetUnset($offset)
-    {
+    public function offsetUnset($offset) {
         $this->session->forget($offset);
     }
 }
