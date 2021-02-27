@@ -1,28 +1,17 @@
 <?php namespace Vintage;
 
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    protected $path = '';
-
-    protected $file = '';
-
-    protected $filePath = '';
-
-    public function __construct()
-    {
-        $this->path = realpath(config('vintage.path', ''));
-    }
-
     public function index(Request $request)
     {
-        $this->file = $request->path() == '/' ? 'index.php' : $request->path();
+        $file = $request->route('path') ?? 'index.php';
 
         ob_start();
 
-        require_once $this->getFilePath();
+        require_once $this->getFilePath($file);
         $result = ob_get_contents();
 
         ob_end_clean();
@@ -30,8 +19,9 @@ class Controller extends BaseController
         return $result;
     }
 
-    protected function getFilePath(): string
+    protected function getFilePath($file): string
     {
-        return realpath($this->path . DIRECTORY_SEPARATOR . $this->file);
+        $folder_name = config('vintage.folder_name', '');
+        return base_path($folder_name . DIRECTORY_SEPARATOR . $file);
     }
 }

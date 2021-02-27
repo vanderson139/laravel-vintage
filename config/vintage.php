@@ -1,8 +1,10 @@
 <?php
 
 return [
-    'path' => base_path('vintage/'),
-    'disable_error_reporting' => true,
-    'enable_session_global' => true,
+    'folder_name' => 'vintage',
+    'middlewares' => [
+        \Vintage\Middleware\MigratedRoutes::class,
+        \Vintage\Middleware\SessionGlobal::class
+    ],
     'migrated_routes' => []
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace ItsSeg\Http\Middleware;
+namespace Vintage\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 
 class MigratedRoutes
 {
-    protected $redirectTo;
+    protected $redirect_to;
 
     protected $routes;
 
@@ -23,10 +23,10 @@ class MigratedRoutes
     {
         $this->routes = config('vintage.migrated_routes', []);
 
-        $path = $request->path() == '/' ? 'index.php' : $request->path();
+        $path = $request->route('path') ?? 'index.php';
 
         if($this->canRedirect($path)) {
-            return redirect()->route($this->redirectTo, $request->query());
+            return redirect()->route($this->redirect_to, $request->query());
         }
 
         $this->abortIfNotExists($path);
@@ -34,17 +34,23 @@ class MigratedRoutes
         return $next($request);
     }
 
-    protected function abortIfNotExists($path)
+    protected function abortIfNotExists(string $file)
     {
-        $filePath = realpath(config('vintage.path', '') . $path);
+        $file_path = $this->getFilePath($file);
 
-        if(!file_exists($filePath)) {
+        if(!file_exists($file_path)) {
             abort(Response::HTTP_NOT_FOUND);
         }
     }
 
+    protected function getFilePath($file): string
+    {
+        $folder_name = config('vintage.folder_name', '');
+        return base_path($folder_name . DIRECTORY_SEPARATOR . $file);
+    }
+
     protected function canRedirect($path)
     {
-        return $this->redirectTo = $this->routes[$path] ?? '';
+        return $this->redirect_to = $this->routes[$path] ?? '';
     }
 }
