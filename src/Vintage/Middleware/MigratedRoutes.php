@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Vintage\Factory;
-use Vintage\Vintage;
 
 class MigratedRoutes
 {
